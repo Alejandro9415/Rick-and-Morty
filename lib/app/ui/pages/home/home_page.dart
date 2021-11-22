@@ -32,7 +32,7 @@ class HomePage extends ConsumerWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed:()=> prueba.decrement(),
+            onPressed: () => prueba.decrement(),
             icon: const Icon(
               Icons.arrow_forward_ios_outlined,
               color: Colors.black54,
@@ -40,7 +40,7 @@ class HomePage extends ConsumerWidget {
           ),
         ],
         leading: IconButton(
-          onPressed:()=> prueba.increment(),
+          onPressed: () => prueba.increment(),
           icon: const Icon(
             Icons.arrow_back_ios_new_outlined,
             color: Colors.black54,
@@ -48,46 +48,51 @@ class HomePage extends ConsumerWidget {
         ),
       ),
       body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: ListView.separated(
-            separatorBuilder: (context, index) => const Divider(
-              thickness: 1.5,
-            ),
-            itemCount: prueba.datosList.length,
-            itemBuilder: (context, index) {
-              final data = prueba.datosList[index];
-              return ListTile(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DetailsPage(
-                      name: data.name,
-                      id: data.id,
-                      gender: data.gender,
-                      species: data.species,
-                      status: data.status,
-                      image: data.image,
-                    ),
-                  ),
-                ),
-                leading: Hero(
-                  tag: data.id,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: FadeInImage.assetNetwork(
-                        placeholder: 'assets/loading.gif',
+        child: prueba.data.fold(
+          (l) => Center(
+            child: Text(prueba.mensaje),
+          ),
+          (r) => Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: ListView.separated(
+              separatorBuilder: (context, index) => const Divider(
+                thickness: 1.5,
+              ),
+              itemCount: prueba.datosList.length,
+              itemBuilder: (context, index) {
+                final data = prueba.datosList[index];
+                return ListTile(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailsPage(
+                        name: data.name,
+                        id: data.id,
+                        gender: data.gender,
+                        species: data.species,
+                        status: data.status,
                         image: data.image,
                       ),
                     ),
                   ),
-                ),
-                title: Text(data.name),
-                subtitle: Text(data.species),
-              );
-            },
+                  leading: Hero(
+                    tag: data.id,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/loading.gif',
+                          image: data.image,
+                        ),
+                      ),
+                    ),
+                  ),
+                  title: Text(data.name),
+                  subtitle: Text(data.species),
+                );
+              },
+            ),
           ),
         ),
       ),
